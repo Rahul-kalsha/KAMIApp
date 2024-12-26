@@ -1,22 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PostsService } from '../../services/posts.service';
 import { AlbumsService } from '../../services/albums.service';
 import { PhotosService } from '../../services/photos.service';
 import * as rxjs from 'rxjs';
 import { Photo } from '../../interfaces/photo.interface';
-
-interface TopPost {
-  title: string;
-  excerpt: string;
-  author: string;
-}
+import { Post } from '../../interfaces/post.interface';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true, 
-  imports: [CommonModule, RouterModule, NgOptimizedImage],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -32,7 +27,7 @@ export class DashboardComponent implements OnInit {
     photos: 0
   };
   recentPhotos: Photo[] = [];
-  topPosts: TopPost[] = [];
+  topPosts: Post[] = [];
 
   ngOnInit(): void {
     this.loadStatistics();
@@ -67,20 +62,15 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadTopPosts(): void {
-    // This would typically come from a service
-    this.topPosts = [
-      {
-        title: 'Sunt Aut Facere Repellat Provident Occaecati Excepturi Optio Reprehenderit',
-        excerpt: 'quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit molestiae ut quas totam nostrum rerum est autem sunt rem eveniet architecto',
-        author: 'Bret'
-      },
-      {
-        title: 'Et Ea Vero Quia Laudantium Autem',
-        excerpt: 'delectus reiciendis molestiae occaecati non minima eveniet qui voluptatibus accusamus in eum beatae sit vel qui neque voluptates ut commodi qui incidunt ut animi commodi',
-        author: 'Samantha'
-      },
-      // Add more posts as needed
-    ];
+    this.postsService.getPosts().subscribe(posts => {
+      if (Array.isArray(posts)) {
+        this.topPosts = posts.slice(0, 6); // Get first 6 posts
+        this.topPosts = this.topPosts.map(post => ({
+          ...post,
+          author: 'Bret'
+        }));
+      }
+    });
   }
  
   handleImageError(event: Event): void {

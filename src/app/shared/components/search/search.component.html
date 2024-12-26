@@ -1,0 +1,6 @@
+<input 
+type="text" 
+class="form-control"
+[placeholder]="searchPlaceholder"
+[(ngModel)]="searchText"
+(ngModelChange)="onSearch($event)">

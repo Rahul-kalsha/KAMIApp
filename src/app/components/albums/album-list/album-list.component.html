@@ -1,1 +1,55 @@
-<p>album-list works!</p>
+<div class="common-container">
+    <div class="content-wrapper">
+        <h4 class="mb-4">Album List</h4>
+
+        <!-- Show spinner when loading -->
+        <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+        <!-- Show content when not loading -->
+        <ng-container *ngIf="!loading">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <app-search searchPlaceholder="Search Albums" (search)="onSearch($event)"></app-search>
+                </div>
+                <div class="col-md-2">
+                    <app-sort [sortOptions]="sortOptions" (sort)="onSort($event)"></app-sort>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <a href="javascript:;" class="col-md-6 col-lg-3 cursor-pointer text-decoration-none" *ngFor="let album of paginatedAlbums" (click)="onAlbumClick(album.id)">
+                    <div class="album-card card h-100">
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate mb-3">{{album.title}}</h6>
+                            <div class="album-preview d-flex">
+                                <div class="preview-box bg-primary"></div>
+                                <div class="preview-box bg-danger mx-2"></div>
+                                <div class="preview-box bg-info"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted cursor-cell" [routerLink]="['/profile', album.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(album.userId)" [attr.aria-label]="'View details of user: ' + album.title"  tabindex="0"
+                                role="button">User ID: {{album.userId}}</small>
+                                <div>
+                                    <i class="bi bi-folder-fill me-2"></i>
+                                    <i class="bi bi-person-fill cursor-cell" [routerLink]="['/profile', album.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(album.userId)" [attr.aria-label]="'View details of user: ' + album.title"  tabindex="0"
+                                    role="button"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <ngb-pagination
+                    [collectionSize]="filteredAlbums.length"
+                    [(page)]="currentPage"
+                    [pageSize]="itemsPerPage"
+                    [maxSize]="5"
+                    [ellipses]="false"
+                    [boundaryLinks]="true">
+                </ngb-pagination>
+            </div>
+        </ng-container>
+    </div>
+</div>

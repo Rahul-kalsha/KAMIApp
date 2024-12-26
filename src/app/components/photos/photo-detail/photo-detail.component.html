@@ -1,1 +1,53 @@
-<p>photo-detail works!</p>
+<div class="common-container">
+  <div class="content-wrapper">
+    <!-- Show spinner when loading -->
+    <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+    <!-- Show content when not loading -->
+    <ng-container *ngIf="!loading && photo">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Photo Details #{{photo.id}}</h5>
+          <button class="btn btn-outline-primary btn-sm" (click)="goBack()">
+            <i class="bi bi-arrow-left me-2"></i>Back
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 position-relative">
+                <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <img [src]="photo.url" 
+                [alt]="photo.title" 
+                class="img-fluid rounded" 
+                (error)="handleImageError($event)"
+                (load)="photo.loading = false"
+                [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
+            </div>
+            <div class="col-md-6">
+              <h4 class="mb-3">{{photo.title}}</h4>
+              <div class="details">
+                <p><strong>Album ID:</strong> {{photo.albumId}}</p>
+                <p><strong>Photo ID:</strong> {{photo.id}}</p>
+                <div class="mt-4">
+                  <h5 class="mb-3">Links:</h5>
+                  <div class="d-flex flex-column gap-2">
+                    <a [href]="photo.url" target="_blank" class="btn btn-outline-primary">
+                      <i class="bi bi-image me-2"></i>View Full Size
+                    </a>
+                    <a [href]="photo.thumbnailUrl" target="_blank" class="btn btn-outline-secondary">
+                      <i class="bi bi-image me-2"></i>View Thumbnail
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -2,9 +2,41 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-cell {
+  cursor: cell !important;
+}
 .card {
     transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     &:hover {
       transform: translateY(-5px);
     }
+}
+
+.common-container {
+  margin-left: 200px;
+}
+.content-wrapper {
+  padding: 20px;
+}
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 }

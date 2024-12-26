@@ -1,0 +1,17 @@
+<div class="dropdown" ngbDropdown>
+    <button 
+      class="btn btn-light dropdown-toggle" 
+      type="button" 
+      ngbDropdownToggle>
+      {{ selectedSortLabel || 'Sort By' }}
+    </button>
+    <ul class="dropdown-menu" ngbDropdownMenu>
+      <li *ngFor="let option of sortOptions">
+        <a href="javascript:;" class="dropdown-item" 
+           ngbDropdownItem
+           (click)="onSortSelect(option)">
+          {{option.label}}
+        </a>
+      </li>
+    </ul>
+</div>

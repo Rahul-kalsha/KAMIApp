@@ -57,8 +57,8 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'users/:id',
-    loadComponent: () => import('./components/users/users.component')
-      .then(m => m.UsersComponent)
+    path: 'profile/:id',
+    loadComponent: () => import('./components/profile/profile.component')
+      .then(m => m.ProfileComponent)
   }
 ];

@@ -1,1 +1,45 @@
-<p>post-list works!</p>
+<div class="common-container">
+    <div class="content-wrapper">
+        <h4 class="mb-4">Post List</h4>
+
+        <!-- Show spinner when loading -->
+        <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+        <!-- Show content when not loading -->
+        <ng-container *ngIf="!loading">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <app-search searchPlaceholder="Search Posts" (search)="onSearch($event)"></app-search>
+                </div>
+                <div class="col-md-2">
+                    <app-sort [sortOptions]="sortOptions" (sort)="onSort($event)"></app-sort>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <a href="javascript:;" class="col-md-6 col-lg-3 cursor-pointer text-decoration-none" *ngFor="let post of paginatedPosts" (click)="onPostClick(post.id)">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title">Post: {{post.id}}</h6>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-eye-fill me-2"></i>
+                                    <i class="bi bi-person-fill cursor-cell" [routerLink]="['/profile', post.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(post.userId)" [attr.aria-label]="'View details of user: ' + post.title"  tabindex="0"
+                                    role="button"></i>
+                                </div>
+                            </div>
+                            <h6 class="card-subtitle text-body-secondary"><b>Title:</b> {{post.title}}</h6>
+                            <p class="card-text line-clamp-3"><b>Description:</b> {{post.body}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                <ngb-pagination [collectionSize]="filteredPosts.length" [(page)]="currentPage" [pageSize]="itemsPerPage"
+                    [maxSize]="5" [boundaryLinks]="true" [ellipses]="false">
+                </ngb-pagination>
+            </div>
+        </ng-container>
+    </div>
+</div>

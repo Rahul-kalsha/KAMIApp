@@ -1,0 +1,106 @@
+<div class="common-container">
+  <div class="content-wrapper">
+    <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+    <ng-container *ngIf="!loading && user">
+      <!-- Profile Header -->
+      <div class="profile-header rounded-3 p-5 mb-4">
+        <div class="text-center">
+          <img src="assets/images/user-avatar.jpg" 
+               alt="Profile picture" 
+               class="rounded-circle profile-avatar mb-3">
+          <h4 class="mb-1">{{user.name}}</h4>
+          <p class="text-muted mb-0">{{'@' + user.username}}</p>
+        </div>
+      </div>
+
+      <!-- Personal Information -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Personal Information</h5>
+          
+          <div class="row g-4">
+            <!-- Name -->
+            <div class="col-md-4">
+              <div class="info-group">
+                <span id="nameLabel" class="text-muted small">NAME</span>
+                <p class="mb-0" aria-labelledby="nameLabel" role="textbox" aria-readonly="true">
+                  {{user.name}}
+                </p>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-4">
+              <div class="info-group">
+                <span id="emailLabel" class="text-muted small">EMAIL</span>
+                <p class="mb-0" aria-labelledby="emailLabel" role="textbox" aria-readonly="true">
+                  <a [href]="'mailto:' + user.email" class="text-primary text-decoration-none">
+                    {{user.email}}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-4">
+              <div class="info-group">
+                <span id="phoneLabel" class="text-muted small">PHONE</span>
+                <p class="mb-0" aria-labelledby="phoneLabel" role="textbox" aria-readonly="true">
+                  <a [href]="'tel:' + user.phone" class="text-primary text-decoration-none">
+                    {{user.phone}}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Website -->
+            <div class="col-md-4">
+              <div class="info-group">
+                <span id="websiteLabel" class="text-muted small">WEBSITE</span>
+                <p class="mb-0" aria-labelledby="websiteLabel" role="textbox" aria-readonly="true">
+                  <a [href]="'https://' + user.website" 
+                     target="_blank" 
+                     class="text-primary text-decoration-none">
+                    {{user.website}}
+                  </a>
+                </p>
+              </div>
+            </div>
+
+            <!-- Company -->
+            <div class="col-md-4">
+              <div class="info-group">
+                <span id="companyLabel" class="text-muted small">COMPANY</span>
+                <p class="mb-0" aria-labelledby="companyLabel" role="textbox" aria-readonly="true">
+                  {{user.company.name}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts Section -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Posts</h5>
+          <div class="posts-list">
+            <div class="row g-4">
+              <div class="col-md-6 col-lg-6" *ngFor="let post of posts">
+                <div class="post-item h-100 p-1">
+                  <h6 class="text-primary mb-2">{{post.title}}</h6>
+                  <p class="text-muted mb-0">{{post.body}}</p>
+                </div>
+              </div>
+            </div>
+            
+            <p *ngIf="posts.length === 0" class="text-muted">
+              No posts found.
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

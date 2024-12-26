@@ -1,1 +1,50 @@
-<p>album-detail works!</p>
+<div class="common-container">
+    <div class="content-wrapper">
+        <!-- Show spinner when loading -->
+        <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+        <!-- Show content when not loading -->
+        <ng-container *ngIf="!loading && album">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Album Details #{{album.id}}</h5>
+                    <button class="btn btn-outline-primary btn-sm" (click)="goBack()">
+                        <i class="bi bi-arrow-left me-2"></i>Back
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h4 class="card-title">{{album.title}}</h4>
+                        <div class="d-flex align-items-center text-muted cursor-pointer" [routerLink]="['/profile', album.userId]" >
+                            <i class="bi bi-person-fill me-2"></i>
+                            <span>User ID: {{album.userId}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Photos Grid -->
+                    <div class="row g-4 mt-3">
+                        <div class="col-md-6 col-lg-3 col-sm-6" *ngFor="let photo of photos">
+                            <div class="photo-card position-relative">
+                                <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <img [src]="photo.thumbnailUrl" 
+                                [alt]="photo.title" 
+                                class="img-fluid rounded" 
+                                (error)="handleImageError($event)"
+                                (load)="photo.loading = false"
+                                [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
+
+                                <div class="photo-title mt-2">
+                                    <small class="text-muted text-truncate d-block">{{photo.title}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

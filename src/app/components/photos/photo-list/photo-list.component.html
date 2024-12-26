@@ -1,1 +1,69 @@
-<p>photo-list works!</p>
+<div class="common-container">
+  <div class="content-wrapper">
+    <h4 class="mb-4">Photo List</h4>
+
+    <!-- Show spinner when loading -->
+    <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+
+    <!-- Show content when not loading -->
+    <ng-container *ngIf="!loading">
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <app-search 
+            [searchPlaceholder]="'Search Photos'"
+            (search)="onSearch($event)">
+          </app-search>
+        </div>
+        <div class="col-md-2">
+          <app-sort 
+            [sortOptions]="sortOptions"
+            (sort)="onSort($event)">
+          </app-sort>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-3" *ngFor="let photo of paginatedPhotos">
+          <div class="card h-100 cursor-pointer" (click)="onPhotoClick(photo.id)" (keydown.enter)="onPhotoClick(photo.id)" [attr.aria-label]="'View details of photo: ' + photo.title"  tabindex="0"
+          role="button">
+
+            <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <a [href]="photo.url" target="_blank" class="text-primary">
+                        <i class="bi bi-link-45deg"></i>
+                    </a>
+                </div>
+                <h6 class="card-title text-truncate mb-2" [title]="photo.title">
+                    {{ photo.title }}
+                </h6>
+            </div>
+            <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <img [src]="photo.thumbnailUrl" 
+            [alt]="photo.title"
+            class="img-fluid rounded card-img-top" 
+            (error)="handleImageError($event)"
+            (load)="photo.loading = false"
+            [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <ngb-pagination
+          [collectionSize]="filteredPhotos.length"
+          [(page)]="currentPage"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+          (pageChange)="updatePaginatedPhotos()">
+        </ngb-pagination>
+      </div>
+    </ng-container>
+  </div>
+</div>

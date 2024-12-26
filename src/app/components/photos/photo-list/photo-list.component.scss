@@ -1,0 +1,30 @@
+.card {
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .card-img-top {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .position-absolute {
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+  }
+  
+  .card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .bi-link-45deg {
+    font-size: 1.2rem;
+  }
