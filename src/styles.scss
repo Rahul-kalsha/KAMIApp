@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.cursor-pointer {
+  cursor: pointer;
+}
+.card {
+    transition: transform 0.2s;
+    &:hover {
+      transform: translateY(-5px);
+    }
+}

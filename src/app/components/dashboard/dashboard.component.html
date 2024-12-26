@@ -1,0 +1,102 @@
+<div class="dashboard-container">
+    <div class="content-wrapper">
+        <div class="row gap-0">
+            <div class="col-lg-8">
+                <!-- Statistics Cards Row -->
+                <div class="row mb-4">
+                    <!-- Posts Stats -->
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stats-icon bg-light rounded-circle p-3 me-3">
+                                    <i class="bi bi-chat-square-text-fill fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Posts</p>
+                                    <h3 class="mb-0">{{ statistics.posts }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Albums Stats -->
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stats-icon bg-light rounded-circle p-3 me-3">
+                                    <i class="bi bi-collection-fill fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Albums</p>
+                                    <h3 class="mb-0">{{ statistics.albums }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Photos Stats -->
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stats-icon bg-light rounded-circle p-3 me-3">
+                                    <i class="bi bi-image-fill fs-4 text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-muted mb-0">Photos</p>
+                                    <h3 class="mb-0">{{ statistics.photos }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Recent Photos Section -->
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Recent Photos <span class="badge bg-primary">{{ recentPhotos.length }}</span></h5>
+                                <div class="row g-3">
+                                    <div class="col-md-3" *ngFor="let photo of recentPhotos">
+                                        <div class="photo-card">
+                                            <div class="position-relative">
+                                                <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                                <img [src]="photo.url" 
+                                                     [alt]="photo.title" 
+                                                     class="img-fluid rounded" 
+                                                     (error)="handleImageError($event)"
+                                                     (load)="photo.loading = false"
+                                                     [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
+                                            </div>
+                                            <p class="small text-muted mt-2 mb-0 text-truncate">{{ photo.title }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- Top Posts Section -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Top Posts <span class="badge bg-primary">{{ topPosts.length }}</span></h5>
+                            <div class="top-posts-list">
+                                <div class="post-item mb-3" *ngFor="let post of topPosts">
+                                    <h6 class="mb-1">&#64;{{ post.title }}</h6>
+                                    <p class="text-muted small mb-0">{{ post.excerpt }}</p>
+                                    <small class="text-primary">{{ post.author }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="sidebar p-3 bg-light h-100 d-flex flex-column">
+    <div class="d-flex align-items-start mb-4">
+        <img src="assets/images/logo.png" alt="Logo" class="me-2 rounded-circle logo-icon">
+        <div class="d-flex flex-column">
+            <h5 class="m-0">Social Grid</h5>
+            <p class="text-muted m-0">Workspace</p>
+        </div>
+    </div>
+    
+    <ul class="nav flex-column mb-auto">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+                <i class="bi bi-grid-1x2-fill me-2"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/posts" routerLinkActive="active">
+                <i class="bi bi-chat-square-text-fill me-2"></i>
+                Posts
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/albums" routerLinkActive="active">
+                <i class="bi bi-collection-fill me-2"></i>
+                Albums
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/photos" routerLinkActive="active">
+                <i class="bi bi-image-fill me-2"></i>
+                Photos
+            </a>
+        </li>
+    </ul>
+
+    <!-- User Profile Card -->
+    <div class="card mt-auto cursor-pointer" routerLink="/profile">
+        <div class="card-body p-2">
+            <div class="d-flex align-items-center">
+                <img src="assets/images/user-avatar.jpg" alt="User" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                <div>
+                    <h6 class="mb-0">User</h6>
+                    <a href="javascript:;" class="text-primary text-decoration-none small">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

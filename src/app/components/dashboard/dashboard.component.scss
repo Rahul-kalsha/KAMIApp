@@ -1,0 +1,39 @@
+.dashboard-container {
+    margin-left: 200px;
+}
+
+.content-wrapper {
+    padding: 20px;
+}
+
+.stats-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-card {
+    img {
+        aspect-ratio: 1;
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+.top-posts-list {
+    .post-item {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        h6 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+    }
+}
