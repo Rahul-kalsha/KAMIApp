@@ -29,13 +29,13 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
+                "input": "public",
+                "output": "/"
               },
               {
                 "glob": "**/*",
-                "input": "public/assets",
-                "output": "assets"
+                "input": "src/assets",
+                "output": "/assets"
               }
             ],
             "styles": [
