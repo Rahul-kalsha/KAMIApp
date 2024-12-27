@@ -28,7 +28,7 @@ describe('ImageUtilsService', () => {
       service.handleImageError(mockEvent);
 
       // Verify that the image src was set to placeholder
-      expect(mockImg.src).toContain('/assets/images/placeholder.jpg');
+      expect(mockImg.src).toContain('assets/images/placeholder.jpg');
     });
 
     it('should handle null event target gracefully', () => {

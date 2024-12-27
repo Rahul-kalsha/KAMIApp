@@ -57,7 +57,7 @@
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Recent Photos <span class="badge bg-primary">{{ recentPhotos.length }}</span></h5>
                                 <div class="row g-3">
-                                    <div class="col-6 col-md-3" *ngFor="let photo of recentPhotos">
+                                    <a href="javascript:;" class="col-6 col-md-3 text-decoration-none" *ngFor="let photo of recentPhotos" [routerLink]="['/photos', photo.id]">
                                         <div class="photo-card">
                                             <div class="position-relative">
                                                 <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
@@ -74,7 +74,7 @@
                                             </div>
                                             <p class="small text-muted mt-2 mb-0 text-truncate">{{ photo.title }}</p>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -89,11 +89,11 @@
                         <div class="card-body overflow-auto" style="max-height: 95vh;">
                             <h5 class="card-title">Top Posts <span class="badge bg-primary">{{ topPosts.length }}</span></h5>
                             <div class="top-posts-list">
-                                <div class="post-item mb-3" *ngFor="let post of topPosts">
+                                <a href="javascript:;" class="post-item mb-3 text-decoration-none my-2 d-flex flex-column" *ngFor="let post of topPosts" [routerLink]="['/posts', post.id]">
                                     <h6 class="text-muted mb-1">&#64;{{ post.author }}</h6>
                                     <small class="text-primary line-clamp-1">{{ post.body }}</small>
-                                    <p class="small mb-0 line-clamp-2">{{ post.title }}</p>
-                                </div>
+                                    <p class="small mb-0 line-clamp-2 text-black">{{ post.title }}</p>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { PostsService } from '../../services/posts.service';
 import { AlbumsService } from '../../services/albums.service';
@@ -49,8 +50,11 @@ describe('DashboardComponent', () => {
     const imageUtilsSpy = jasmine.createSpyObj('ImageUtilsService', ['handleImageError']);
 
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent],
+      imports: [
+        DashboardComponent
+      ],
       providers: [
+        provideRouter([]),
         { provide: PostsService, useValue: postsServiceSpy },
         { provide: AlbumsService, useValue: albumsServiceSpy },
         { provide: PhotosService, useValue: photosServiceSpy },

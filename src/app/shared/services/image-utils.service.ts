@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ImageUtilsService {
-  private readonly PLACEHOLDER_IMAGE = '/assets/images/placeholder.jpg';
+  private readonly PLACEHOLDER_IMAGE = 'assets/images/placeholder.jpg';
 
   handleImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
