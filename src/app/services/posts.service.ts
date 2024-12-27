@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment';
 import { Post } from '../interfaces/post.interface';
@@ -11,7 +11,7 @@ export class PostsService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/posts`;
 
-  getPosts(params?: any): Observable<Post[]> {
+  getPosts(params?: any): Observable<HttpResponse<Post[]>> {
     let httpParams = new HttpParams();
   
     if (params) {
@@ -20,7 +20,8 @@ export class PostsService {
       });
     }
     return this.http.get<Post[]>(this.baseUrl, { 
-      params: httpParams
+      params: httpParams,
+      observe: 'response'  
     });
   }
 

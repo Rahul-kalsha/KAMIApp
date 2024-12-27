@@ -4,26 +4,34 @@
 
     <!-- Show spinner when loading -->
     <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
+   
+    <div class="row m-0 gap-2">
+      <div class="col-md-4">
+        <app-search 
+          searchPlaceholder="Search Photos"
+          [initialValue]="searchTerm"
+          (search)="onSearch($event)">
+        </app-search>
+      </div>
+      <div class="col-md-2">
+        <app-sort 
+          [sortOptions]="sortOptions"
+          [initialValue]="getSortValue()"
+          (sort)="onSort($event)">
+        </app-sort>
+      </div>
+    </div>
 
-    <!-- Show content when not loading -->
     <ng-container *ngIf="!loading">
-      <div class="row mb-4">
-        <div class="col-md-4">
-          <app-search 
-            [searchPlaceholder]="'Search Photos'"
-            (search)="onSearch($event)">
-          </app-search>
-        </div>
-        <div class="col-md-2">
-          <app-sort 
-            [sortOptions]="sortOptions"
-            (sort)="onSort($event)">
-          </app-sort>
-        </div>
+      <!-- No data message -->
+      <div *ngIf="photos.length === 0" class="alert alert-info text-center mt-4" role="alert">
+        <i class="bi bi-info-circle me-2"></i>
+        No photos found. Try adjusting your search criteria.
       </div>
 
-      <div class="row g-4">
-        <div class="col-md-3" *ngFor="let photo of paginatedPhotos">
+      <!-- Photo grid -->
+      <div class="row g-4 m-0" *ngIf="photos.length > 0">
+        <div class="col-md-6 col-lg-3" *ngFor="let photo of photos">
           <div class="card h-100 cursor-pointer" (click)="onPhotoClick(photo.id)" (keydown.enter)="onPhotoClick(photo.id)" [attr.aria-label]="'View details of photo: ' + photo.title"  tabindex="0"
           role="button">
 
@@ -45,7 +53,7 @@
             <img [src]="photo.thumbnailUrl" 
             [alt]="photo.title"
             class="img-fluid rounded card-img-top" 
-            (error)="handleImageError($event)"
+            (error)="imageUtils.handleImageError($event)"
             (load)="photo.loading = false"
             [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
             
@@ -53,15 +61,16 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-center mt-4">
+      <!-- Pagination -->
+      <div class="d-flex justify-content-center mt-4" *ngIf="photos.length > 0">
         <ngb-pagination
-          [collectionSize]="filteredPhotos.length"
+          [collectionSize]="totalItems"
           [(page)]="currentPage"
           [pageSize]="itemsPerPage"
           [maxSize]="5"
           [ellipses]="false"
           [boundaryLinks]="true"
-          (pageChange)="updatePaginatedPhotos()">
+          (pageChange)="onPageChange($event)">
         </ngb-pagination>
       </div>
     </ng-container>

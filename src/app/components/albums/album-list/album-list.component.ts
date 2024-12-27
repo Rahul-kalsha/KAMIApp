@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { Album } from '../../../interfaces/album.interface';
@@ -6,7 +6,9 @@ import { AlbumsService } from '../../../services/albums.service';
 import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { PaginationParams } from '../../../interfaces/pagination-params.interface';
+import { Subject, debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-album-list',
@@ -15,12 +17,18 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './album-list.component.html',
   styleUrls: ['./album-list.component.scss']
 })
-export class AlbumListComponent implements OnInit {
+export class AlbumListComponent implements OnInit, OnDestroy {
   albums: Album[] = [];
-  filteredAlbums: Album[] = [];
   currentPage = 1;
   itemsPerPage = 10;
   loading = false;
+  totalItems = 0;
+  currentSort = '';
+  currentOrder: 'asc' | 'desc' = 'asc';
+  searchTerm = '';
+
+  private searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
 
   sortOptions = [
     { label: 'Title (A-Z)', value: 'title_asc' },
@@ -29,18 +37,83 @@ export class AlbumListComponent implements OnInit {
     { label: 'User ID (Desc)', value: 'userId_desc' }
   ];
 
-  constructor(private albumsService: AlbumsService, private router: Router) {}
+  constructor(
+    private albumsService: AlbumsService, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(searchTerm => {
+      this.searchTerm = searchTerm;
+      this.currentPage = 1;
+      this.loadAlbums();
+    });
+  }
 
   ngOnInit() {
-    this.loadAlbums();
+    this.route.queryParams.subscribe(params => {
+      this.currentPage = Number(params['page']) || 1;
+      this.searchTerm = params['search'] || '';
+      if (params['sort']) {
+        const [field, order] = params['sort'].split('_');
+        this.currentSort = field;
+        this.currentOrder = order as 'asc' | 'desc';
+      }
+      
+      if (!this.loading) {
+        this.loadAlbums();
+      }
+    });
+  }
+
+  private updateQueryParams() {
+    const queryParams = { ...this.route.snapshot.queryParams };
+    
+    queryParams['page'] = this.currentPage;
+
+    if (this.searchTerm?.trim()) {
+      queryParams['search'] = this.searchTerm;
+    } else {
+      delete queryParams['search'];
+    }
+
+    if (this.currentSort) {
+      queryParams['sort'] = `${this.currentSort}_${this.currentOrder}`;
+    } else {
+      delete queryParams['sort'];
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams
+    });
   }
 
   loadAlbums() {
     this.loading = true;
-    this.albumsService.getAlbums().subscribe({
-      next: (albums) => {
-        this.albums = albums;
-        this.filteredAlbums = [...this.albums];
+
+    const params: PaginationParams = {
+      _page: this.currentPage,
+      _limit: this.itemsPerPage
+    };
+
+    if (this.searchTerm?.trim()) {
+      params.q = this.searchTerm;
+    }
+
+    if (this.currentSort) {
+      params._sort = this.currentSort;
+      params._order = this.currentOrder;
+    }
+
+    this.updateQueryParams();
+
+    this.albumsService.getAlbums(params).subscribe({
+      next: (response) => {
+        this.albums = response.body || [];
+        this.totalItems = Number(response.headers.get('x-total-count')) || 0;
         this.loading = false;
       },
       error: (error) => {
@@ -51,40 +124,37 @@ export class AlbumListComponent implements OnInit {
   }
 
   onSearch(searchText: string) {
-    this.currentPage = 1;
-    this.filteredAlbums = this.albums.filter(album => 
-      album.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      album.id?.toString().includes(searchText)
-    );
+    this.searchSubject.next(searchText);
   }
 
   onSort(sortBy: string) {
     this.currentPage = 1;
-    switch(sortBy) {
-      case 'title_asc':
-        this.filteredAlbums.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case 'title_desc':
-        this.filteredAlbums.sort((a, b) => b.title.localeCompare(a.title));
-        break;
-      case 'userId_asc':
-        this.filteredAlbums.sort((a, b) => a.userId - b.userId);
-        break;
-      case 'userId_desc':
-        this.filteredAlbums.sort((a, b) => b.userId - a.userId);
-        break;
-    }
+    const [field, order] = sortBy.split('_');
+    this.currentSort = field;
+    this.currentOrder = order as 'asc' | 'desc';
+    this.loadAlbums();
   }
 
-  get paginatedAlbums() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredAlbums.slice(startIndex, startIndex + this.itemsPerPage);
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.loadAlbums();
   }
+
   onAlbumClick(albumId: number) {
-    console.log('Album clicked:', albumId);
     this.router.navigate(['/albums', albumId]);
   }
+
   onUserClick(userId: number) {
     this.router.navigate(['/profile', userId]);
+  }
+
+  getSortValue(): string {
+    return this.currentSort ? `${this.currentSort}_${this.currentOrder}` : '';
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 }

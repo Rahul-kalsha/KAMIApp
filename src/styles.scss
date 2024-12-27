@@ -7,7 +7,8 @@
 }
 .card {
     transition: transform 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: 100%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
     &:hover {
       transform: translateY(-5px);
     }
@@ -35,8 +36,22 @@
 }
 .line-clamp-3 {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  word-break: break-word;
+  text-overflow: ellipsis;
+}
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 991.98px) {
+  .common-container {
+    margin-left: 0;
+    margin-top: 70px;
+  }
+  .content-wrapper {
+    padding: 5px;
+  }
 }

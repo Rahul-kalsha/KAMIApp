@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PhotosService } from '../../../services/photos.service';
 import { Photo } from '../../../interfaces/photo.interface';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
+import { ImageUtilsService } from '../../../shared/services/image-utils.service';
 
 @Component({
   selector: 'app-photo-detail',
@@ -15,12 +16,12 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 export class PhotoDetailComponent implements OnInit {
   photo: Photo | null = null;
   loading = false;
-  private readonly PLACEHOLDER_IMAGE = '/assets/images/placeholder.jpg';
 
   constructor(
     private route: ActivatedRoute,
     private photosService: PhotosService,
-    private location: Location
+    private location: Location,
+    public imageUtils: ImageUtilsService
   ) {}
 
   ngOnInit() {
@@ -47,11 +48,5 @@ export class PhotoDetailComponent implements OnInit {
 
   goBack() {
     this.location.back();
-  }
-  handleImageError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img) {
-      img.src = this.PLACEHOLDER_IMAGE;
-    }
   }
 }

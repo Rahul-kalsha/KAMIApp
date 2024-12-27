@@ -2,6 +2,27 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
 
+## Features
+
+### Core Functionality
+- User profile management with avatar support
+- Responsive mobile-first design
+- Dynamic navigation system
+- Standalone component architecture
+
+### UI/UX Features
+- Modern, intuitive interface
+- Mobile-optimized header with quick access navigation
+- Responsive image handling
+- Bootstrap 5 integration for consistent styling
+- Bootstrap Icons integration
+
+### Technical Highlights
+- Angular 18+ with standalone components
+- Lazy loading for optimal performance
+- Router integration for seamless navigation
+- Comprehensive testing suite
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
@@ -17,6 +38,19 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+The project includes comprehensive test coverage for:
+- Component functionality
+- User interactions (mouse and keyboard events)
+- Accessibility features
+
+## Accessibility
+
+This project follows WCAG accessibility guidelines including:
+- Keyboard navigation support
+- ARIA labels and roles
+- Proper focus management
+- Screen reader compatibility
 
 ## Running end-to-end tests
 

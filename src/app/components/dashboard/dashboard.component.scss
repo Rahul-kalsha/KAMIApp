@@ -29,3 +29,25 @@
         }
     }
 }
+
+// Add responsive adjustments
+@media (max-width: 767.98px) {
+    .stats-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .photo-card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .top-posts-list {
+        max-height: 50vh;
+    }
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}

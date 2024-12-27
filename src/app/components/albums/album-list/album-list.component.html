@@ -6,18 +6,32 @@
         <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
 
         <!-- Show content when not loading -->
+        <div class="row m-0 gap-2">
+            <div class="col-md-4">
+                <app-search 
+                    searchPlaceholder="Search Albums" 
+                    [initialValue]="searchTerm"
+                    (search)="onSearch($event)">
+                </app-search>
+            </div>
+            <div class="col-md-2">
+                <app-sort 
+                    [sortOptions]="sortOptions" 
+                    [initialValue]="getSortValue()"
+                    (sort)="onSort($event)">
+                </app-sort>
+            </div>
+        </div>
         <ng-container *ngIf="!loading">
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <app-search searchPlaceholder="Search Albums" (search)="onSearch($event)"></app-search>
-                </div>
-                <div class="col-md-2">
-                    <app-sort [sortOptions]="sortOptions" (sort)="onSort($event)"></app-sort>
-                </div>
+            <!-- No data message -->
+            <div *ngIf="albums.length === 0" class="alert alert-info text-center mt-4" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
+                No albums found. Try adjusting your search criteria.
             </div>
 
-            <div class="row g-4">
-                <a href="javascript:;" class="col-md-6 col-lg-3 cursor-pointer text-decoration-none" *ngFor="let album of paginatedAlbums" (click)="onAlbumClick(album.id)">
+            <!-- Albums grid -->
+            <div class="row g-4 m-0" *ngIf="albums.length > 0">
+                <a href="javascript:;" class="col-md-6 col-lg-3 cursor-pointer text-decoration-none" *ngFor="let album of albums" (click)="onAlbumClick(album.id)">
                     <div class="album-card card h-100">
                         <div class="card-body">
                             <h6 class="card-title text-truncate mb-3">{{album.title}}</h6>
@@ -40,14 +54,16 @@
                 </a>
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4" *ngIf="albums.length > 0">
                 <ngb-pagination
-                    [collectionSize]="filteredAlbums.length"
+                    [collectionSize]="totalItems"
                     [(page)]="currentPage"
                     [pageSize]="itemsPerPage"
                     [maxSize]="5"
                     [ellipses]="false"
-                    [boundaryLinks]="true">
+                    [boundaryLinks]="true"
+                    (pageChange)="onPageChange($event)">
                 </ngb-pagination>
             </div>
         </ng-container>

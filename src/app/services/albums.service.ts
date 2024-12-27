@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment';
 import { Album } from '../interfaces/album.interface';
@@ -11,7 +11,7 @@ export class AlbumsService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/albums`;
 
-  getAlbums(params?: any): Observable<Album[]> {
+  getAlbums(params?: any): Observable<HttpResponse<Album[]>> {
     let httpParams = new HttpParams();
   
     if (params) {
@@ -20,7 +20,8 @@ export class AlbumsService {
       });
     }
     return this.http.get<Album[]>(this.baseUrl, { 
-      params: httpParams
+      params: httpParams,
+      observe: 'response'  
     });
   }
 

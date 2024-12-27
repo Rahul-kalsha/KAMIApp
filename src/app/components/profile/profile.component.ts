@@ -49,8 +49,8 @@ export class ProfileComponent implements OnInit {
 
   loadUserPosts(userId: number) {
     this.postsService.getPosts({userId: userId}).subscribe({
-      next: (posts) => {
-        this.posts = posts;
+      next: (response) => {
+        this.posts = response.body || [];
         this.loading = false;
       },
       error: (error) => {

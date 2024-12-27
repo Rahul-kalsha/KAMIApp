@@ -4,40 +4,56 @@
 
         <!-- Show spinner when loading -->
         <app-spinner [overlay]="true" message="Loading data..." *ngIf="loading"></app-spinner>
-
-        <!-- Show content when not loading -->
+    
+        <div class="row m-0 gap-2">
+            <div class="col-md-4">
+                <app-search 
+                    searchPlaceholder="Search Posts" 
+                    [initialValue]="searchTerm"
+                    (search)="onSearch($event)">
+                </app-search>
+            </div>
+            <div class="col-md-2">
+                <app-sort 
+                    [sortOptions]="sortOptions" 
+                    [initialValue]="getSortValue()"
+                    (sort)="onSort($event)">
+                </app-sort>
+            </div>
+        </div>
         <ng-container *ngIf="!loading">
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <app-search searchPlaceholder="Search Posts" (search)="onSearch($event)"></app-search>
-                </div>
-                <div class="col-md-2">
-                    <app-sort [sortOptions]="sortOptions" (sort)="onSort($event)"></app-sort>
-                </div>
+            <!-- No data message -->
+            <div *ngIf="paginatedPosts.length === 0" class="alert alert-info text-center mt-4" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
+                No posts found. Try adjusting your search criteria.
             </div>
 
-            <div class="row g-4">
-                <a href="javascript:;" class="col-md-6 col-lg-3 cursor-pointer text-decoration-none" *ngFor="let post of paginatedPosts" (click)="onPostClick(post.id)">
-                    <div class="card h-100">
+            <!-- Posts list -->
+            <div class="row g-4 m-0" *ngIf="paginatedPosts.length > 0">
+                <div class="col-md-6 col-lg-4" *ngFor="let post of paginatedPosts">
+                    <div class="card h-100 cursor-pointer" (click)="onPostClick(post.id)" (keydown.enter)="onPostClick(post.id)" [attr.aria-label]="'View details of post: ' + post.title" tabindex="0" role="button">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="card-title">Post: {{post.id}}</h6>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-eye-fill me-2"></i>
-                                    <i class="bi bi-person-fill cursor-cell" [routerLink]="['/profile', post.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(post.userId)" [attr.aria-label]="'View details of user: ' + post.title"  tabindex="0"
-                                    role="button"></i>
-                                </div>
+                            <h5 class="card-title text-truncate">{{post.title}}</h5>
+                            <p class="card-text text-truncate">{{post.body}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted cursor-cell" [routerLink]="['/profile', post.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(post.userId)" [attr.aria-label]="'View details of user: ' + post.title" tabindex="0" role="button">User ID: {{post.userId}}</small>
+                                <i class="bi bi-person-fill cursor-cell" [routerLink]="['/profile', post.userId]" (click)="$event.stopPropagation()" (keydown.enter)="onUserClick(post.userId)" [attr.aria-label]="'View details of user: ' + post.title" tabindex="0" role="button"></i>
                             </div>
-                            <h6 class="card-subtitle text-body-secondary"><b>Title:</b> {{post.title}}</h6>
-                            <p class="card-text line-clamp-3"><b>Description:</b> {{post.body}}</p>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
 
-            <div class="d-flex justify-content-center mt-4">
-                <ngb-pagination [collectionSize]="filteredPosts.length" [(page)]="currentPage" [pageSize]="itemsPerPage"
-                    [maxSize]="5" [boundaryLinks]="true" [ellipses]="false">
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4" *ngIf="paginatedPosts.length > 0">
+                <ngb-pagination
+                    [collectionSize]="totalItems"
+                    [(page)]="currentPage"
+                    [pageSize]="itemsPerPage"
+                    [maxSize]="5"
+                    [ellipses]="false"
+                    [boundaryLinks]="true"
+                    (pageChange)="onPageChange($event)">
                 </ngb-pagination>
             </div>
         </ng-container>

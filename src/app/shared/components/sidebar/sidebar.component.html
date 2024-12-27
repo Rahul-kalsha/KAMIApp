@@ -1,5 +1,8 @@
-<div class="sidebar p-3 bg-light h-100 d-flex flex-column">
-    <div class="d-flex align-items-start mb-4">
+<app-mobile-header (menuClick)="toggleSidebar()"></app-mobile-header>
+
+<div class="sidebar p-3 bg-light h-100 d-flex flex-column" [class.show]="isSidebarOpen">
+    <!-- Desktop logo - hide on mobile -->
+    <div class="d-none d-lg-flex align-items-start mb-4">
         <img src="assets/images/logo.png" alt="Logo" class="me-2 rounded-circle logo-icon">
         <div class="d-flex flex-column">
             <h5 class="m-0">Social Grid</h5>
@@ -7,6 +10,7 @@
         </div>
     </div>
     
+    <!-- Rest of the sidebar content -->
     <ul class="nav flex-column mb-auto">
         <li class="nav-item">
             <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
@@ -34,14 +38,14 @@
         </li>
     </ul>
 
-    <!-- User Profile Card -->
-    <div class="card mt-auto cursor-pointer" [routerLink]="['/profile', 1]">
+    <!-- User Profile Card - hide on mobile -->
+    <div class="card mt-auto cursor-pointer d-none d-lg-block">
         <div class="card-body p-2">
             <div class="d-flex align-items-center">
                 <img src="assets/images/user-avatar.jpg" alt="User" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                 <div>
                     <h6 class="mb-0">User</h6>
-                    <a href="javascript:;" class="text-primary text-decoration-none small">View Profile</a>
+                    <a href="javascript:;" class="text-primary text-decoration-none small" [routerLink]="['/profile', 1]">View Profile</a>
                 </div>
             </div>
         </div>

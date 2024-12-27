@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment';
 import { Photo } from '../interfaces/photo.interface';
@@ -11,7 +11,7 @@ export class PhotosService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/photos`;
 
-  getPhotos(params?: any): Observable<Photo[]> {
+  getPhotos(params?: any): Observable<HttpResponse<Photo[]>> {
     let httpParams = new HttpParams();
   
     if (params) {
@@ -21,7 +21,8 @@ export class PhotosService {
     }
   
     return this.http.get<Photo[]>(this.baseUrl, { 
-      params: httpParams
+      params: httpParams,
+      observe: 'response'  
     });
   }
 

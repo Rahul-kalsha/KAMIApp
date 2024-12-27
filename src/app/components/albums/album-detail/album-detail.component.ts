@@ -7,6 +7,7 @@ import { SpinnerComponent } from '../../../shared/components/spinner/spinner.com
 import { Album } from '../../../interfaces/album.interface';
 import { PhotosService } from '../../../services/photos.service';
 import { Photo } from '../../../interfaces/photo.interface';
+import { ImageUtilsService } from '../../../shared/services/image-utils.service';
 
 @Component({
   selector: 'app-album-detail',
@@ -19,13 +20,13 @@ export class AlbumDetailComponent implements OnInit {
   album: Album | null = null;
   loading = false;
   photos: Photo[] = [];
-  private readonly PLACEHOLDER_IMAGE = '/assets/images/placeholder.jpg';
 
   constructor(
     private route: ActivatedRoute,
     private albumsService: AlbumsService,
     private photosService: PhotosService,
-    private location: Location
+    private location: Location,
+    public imageUtils: ImageUtilsService
   ) {}
 
   ngOnInit() {
@@ -52,8 +53,8 @@ export class AlbumDetailComponent implements OnInit {
 
   loadAlbumPhotos(id: number) {
     this.photosService.getPhotos({ albumId: id}).subscribe({
-      next: (data) => {
-        this.photos = data.map(photo => ({
+      next: (response) => {
+        this.photos = (response.body || []).map(photo => ({
           ...photo,
           loading: true
         }));
@@ -62,12 +63,6 @@ export class AlbumDetailComponent implements OnInit {
         console.error('Error loading photos:', error);
       }
     });
-  }
-  handleImageError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img) {
-      img.src = this.PLACEHOLDER_IMAGE;
-    }
   }
   goBack() {
     this.location.back();

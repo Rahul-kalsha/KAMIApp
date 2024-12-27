@@ -7,11 +7,23 @@ body {
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 1000;
+    background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+    
     .logo-icon {
         width: 40px;
         height: 40px;
+    }
+
+    @media (max-width: 991.98px) {
+        top: 60px; 
+        transform: translateX(-100%);
+        
+        &.show {
+            transform: translateX(0);
+        }
     }
 }
 
@@ -23,4 +35,9 @@ body {
         color: #0d6efd;
         background-color: rgba(13, 110, 253, 0.1);
     }
+}
+
+// Add hamburger menu styles
+.sidebar-toggle {
+    display: none;
 }

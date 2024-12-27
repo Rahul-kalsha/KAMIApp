@@ -7,6 +7,7 @@ import { PhotosService } from '../../services/photos.service';
 import * as rxjs from 'rxjs';
 import { Photo } from '../../interfaces/photo.interface';
 import { Post } from '../../interfaces/post.interface';
+import { ImageUtilsService } from '../../shared/services/image-utils.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,10 +17,10 @@ import { Post } from '../../interfaces/post.interface';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  private readonly PLACEHOLDER_IMAGE = '/assets/images/placeholder.jpg';
   private postsService = inject(PostsService);
   private albumsService = inject(AlbumsService);
   private photosService = inject(PhotosService);
+  public imageUtils = inject(ImageUtilsService);
 
   statistics = {
     posts: 0,
@@ -37,23 +38,22 @@ export class DashboardComponent implements OnInit {
 
   private loadStatistics(): void {
     rxjs.forkJoin({
-      posts: this.postsService.getPosts(),
-      albums: this.albumsService.getAlbums(),
-      photos: this.photosService.getPhotos()
+      posts: this.postsService.getPosts({ _limit: 1 }),
+      albums: this.albumsService.getAlbums({ _limit: 1 }),
+      photos: this.photosService.getPhotos({ _limit: 1 })
     }).subscribe(data => {
       this.statistics = {
-        posts: Array.isArray(data.posts) ? data.posts.length : 0,
-        albums: Array.isArray(data.albums) ? data.albums.length : 0,
-        photos: Array.isArray(data.photos) ? data.photos.length : 0,
+        posts: Number(data.posts.headers.get('x-total-count')) || 0,
+        albums: Number(data.albums.headers.get('x-total-count')) || 0,
+        photos: Number(data.photos.headers.get('x-total-count')) || 0
       };
     });
   }
 
   private loadRecentPhotos(): void {
-    this.photosService.getPhotos().subscribe(photos => {
-      if (Array.isArray(photos)) {
-        this.recentPhotos = photos.slice(0, 12); // Get first 12 photos
-        this.recentPhotos = this.recentPhotos.map(photo => ({
+    this.photosService.getPhotos({ _limit: 20 }).subscribe(response => {
+      if (response.body) {
+        this.recentPhotos = response.body.map(photo => ({
           ...photo,
           loading: true
         }));
@@ -62,21 +62,13 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadTopPosts(): void {
-    this.postsService.getPosts().subscribe(posts => {
-      if (Array.isArray(posts)) {
-        this.topPosts = posts.slice(0, 6); // Get first 6 posts
-        this.topPosts = this.topPosts.map(post => ({
+    this.postsService.getPosts({ _limit: 6 }).subscribe(response => {
+      if (response.body) {
+        this.topPosts = response.body.map(post => ({
           ...post,
           author: 'Bret'
         }));
       }
     });
-  }
- 
-  handleImageError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img) {
-      img.src = this.PLACEHOLDER_IMAGE;
-    }
   }
 }

@@ -22,7 +22,7 @@
                     </div>
 
                     <!-- Photos Grid -->
-                    <div class="row g-4 mt-3">
+                    <div class="row g-4">
                         <div class="col-md-6 col-lg-3 col-sm-6" *ngFor="let photo of photos">
                             <div class="photo-card position-relative">
                                 <div *ngIf="photo?.loading" class="position-absolute top-50 start-50 translate-middle">
@@ -33,7 +33,7 @@
                                 <img [src]="photo.thumbnailUrl" 
                                 [alt]="photo.title" 
                                 class="img-fluid rounded" 
-                                (error)="handleImageError($event)"
+                                (error)="imageUtils.handleImageError($event)"
                                 (load)="photo.loading = false"
                                 [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
 

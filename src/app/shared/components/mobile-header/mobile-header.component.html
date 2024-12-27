@@ -1,0 +1,18 @@
+<div class="mobile-header d-lg-none">
+    <button class="btn btn-link text-dark" (click)="onMenuClick()" role="button" aria-label="Toggle menu">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+    <img src="assets/images/logo.png" alt="Logo" class="mobile-logo">
+    <div class="mobile-user">
+      <img 
+        src="assets/images/user-avatar.jpg" 
+        alt="User" 
+        class="rounded-circle" 
+        [routerLink]="['/profile', 1]"
+        role="button"
+        aria-label="View profile"
+        (click)="onProfileClick()"
+        (keydown.enter)="onProfileClick()"
+        tabindex="0">
+    </div>
+</div>

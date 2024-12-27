@@ -23,7 +23,7 @@
                 <img [src]="photo.url" 
                 [alt]="photo.title" 
                 class="img-fluid rounded" 
-                (error)="handleImageError($event)"
+                (error)="imageUtils.handleImageError($event)"
                 (load)="photo.loading = false"
                 [ngStyle]="{'opacity': photo.loading ? '0' : '1'}">
             </div>
