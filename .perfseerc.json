@@ -8,6 +8,7 @@
   },
   "lab": {
     "url": "https://rahul-kalsha.github.io/KAMIApp",
+    "environment": "Production",
     "device": "desktop",
     "runs": 3,
     "throttle": {
