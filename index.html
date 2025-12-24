@@ -1,13 +1,33 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>KAMIApp</title>
   <base href="/KAMIApp/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Single Page Apps for GitHub Pages -->
+  <!-- https://github.com/rafgraph/spa-github-pages -->
+  <!-- This script checks to see if a redirect is present in the query string, -->
+  <!-- converts it back into the correct url and adds it to the browser's history -->
+  <script>
+    (function (l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
 <link rel="stylesheet" href="styles-55YDUPRV.css"></head>
+
 <body>
   <app-root></app-root>
 <link rel="modulepreload" href="chunk-GJLT4NFV.js"><script src="polyfills-MH2GNY63.js" type="module"></script><script src="scripts-QYHR5MO2.js" defer></script><script src="main-ZHMTIYFK.js" type="module"></script></body>
+
 </html>
