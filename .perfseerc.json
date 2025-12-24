@@ -5,17 +5,5 @@
       "owner": "Rahul-kalsha",
       "repo": "KAMIApp"
     }
-  },
-  "lab": {
-    "url": "https://rahul-kalsha.github.io/KAMIApp",
-    "environment": "Production",
-    "device": "desktop",
-    "runs": 3,
-    "throttle": {
-      "cpuSlowdownMultiplier": 4,
-      "requestLatencyMs": 0,
-      "downloadThroughputKbps": 0,
-      "uploadThroughputKbps": 0
-    }
   }
 }

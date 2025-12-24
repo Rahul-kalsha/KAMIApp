@@ -93,17 +93,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/kamiapp/browser
           cname: false
-
-      - name: Wait for deployment
-        run: sleep 30
-
-      - name: Trigger Perfsee Lab Analysis
-        env:
-          PERFSEE_TOKEN: ${{ secrets.PERFSEE_TOKEN }}
-        run: |
-          curl -X POST \
-            -H "Authorization: Bearer $PERFSEE_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"url": "https://rahul-kalsha.github.io/KAMIApp"}' \
-            https://perfsee.com/api/v1/projects/kamiapp/lab/trigger || echo "Lab trigger failed, continuing..."
-        continue-on-error: true
