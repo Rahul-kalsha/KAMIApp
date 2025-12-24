@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - SPA/main
   pull_request:
     branches:
       - main
+      - SPA/main
   workflow_dispatch:
 
 jobs:
@@ -61,7 +63,7 @@ jobs:
   deploy:
     needs: build-and-analyze
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/SPA/main') && github.event_name == 'push'
     
     permissions:
       contents: write
